@@ -18,16 +18,30 @@ int gtext(const char *text, int x, int y, int fs, int ro, int r, int g, int b, i
   return 0;
 } 
 
-int grect(int x, int y, int w, int h, int thick, int r, int g, int b, int a) {
+int grect(int x, int y, int w, int h, int t, int r, int g, int b, int a) {
   Color c = {r, g, b, a};
   Rectangle rect = {x, y, w, h};
-  DrawRectangleLinesEx(rect, thick, c);
+  DrawRectangleLinesEx(rect, t, c);
   return 0;
 }
 
 int grect_fill(int x, int y, int w, int h, int r, int g, int b, int a) {
   Color c = {r, g, b, a};
   DrawRectangle(x, y, w, h, c);
+  return 0;
+}
+
+int gcirc(int x, int y, int t, int ra, int r, int g, int b, int a) {
+  Color c = {r, g, b, a};
+  for (int i = 0; i < t; i++) {
+    DrawCircleLines(x, y, ra - i, c);
+  }
+  return 0;
+}
+
+int gcirc_fill(int x, int y, int ra, int r, int g, int b, int a) {
+  Color c = {r, g, b, a};
+  DrawCircle(x, y, ra, c);
   return 0;
 }
 
