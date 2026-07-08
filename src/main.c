@@ -59,6 +59,10 @@ int neko_launch(const char *fname) {
   gset_fps(24);
   while (!gshould_stop()) {
     gbegin();
+    if (_updatee) {
+      lua_getglobal(L, "_update");
+      lua_run(L, 0, 0);
+    }
     if (_drawe) {
       lua_getglobal(L, "_draw");
       lua_run(L, 0, 0);
