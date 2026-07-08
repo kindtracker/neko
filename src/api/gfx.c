@@ -166,6 +166,52 @@ int gfx_line_ex(lua_State *L) {
   return 0;
 }
 
+int gfx_tri(lua_State *L) {
+  float x1 = luaL_checknumber(L, 1) * scale_x;
+  float y1 = luaL_checknumber(L, 2) * scale_y;
+  float x2 = luaL_checknumber(L, 3) * scale_x;
+  float y2 = luaL_checknumber(L, 4) * scale_y;
+  float x3 = luaL_checknumber(L, 5) * scale_x;
+  float y3 = luaL_checknumber(L, 6) * scale_y;
+  int color = (int)luaL_checknumber(L, 7);
+  int a = luaL_optnumber(L, 8, 1.0f) * 255.0f;
+  gfx_color c = get_color(color);
+  
+  gtri(x1, y1, x2, y2, x3, y3, scale, c.r, c.g, c.b, a);
+  return 0;
+}
+
+int gfx_tri_fill(lua_State *L) {
+  float x1 = luaL_checknumber(L, 1) * scale_x;
+  float y1 = luaL_checknumber(L, 2) * scale_y;
+  float x2 = luaL_checknumber(L, 3) * scale_x;
+  float y2 = luaL_checknumber(L, 4) * scale_y;
+  float x3 = luaL_checknumber(L, 5) * scale_x;
+  float y3 = luaL_checknumber(L, 6) * scale_y;
+  int color = (int)luaL_checknumber(L, 7);
+  int a = luaL_optnumber(L, 8, 1.0f) * 255.0f;
+  gfx_color c = get_color(color);
+  
+  gtri_fill(x1, y1, x2, y2, x3, y3, c.r, c.g, c.b, a);
+  return 0;
+}
+
+int gfx_tri_ex(lua_State *L) {
+  float x1 = luaL_checknumber(L, 1) * scale_x;
+  float y1 = luaL_checknumber(L, 2) * scale_y;
+  float x2 = luaL_checknumber(L, 3) * scale_x;
+  float y2 = luaL_checknumber(L, 4) * scale_y;
+  float x3 = luaL_checknumber(L, 5) * scale_x;
+  float y3 = luaL_checknumber(L, 6) * scale_y;
+  float t = luaL_checknumber(L, 7) * scale;
+  int color = (int)luaL_checknumber(L, 8);
+  int a = luaL_optnumber(L, 9, 1.0f) * 255.0f;
+  gfx_color c = get_color(color);
+  
+  gtri(x1, y1, x2, y2, x3, y3, t, c.r, c.g, c.b, a);
+  return 0;
+}
+
 int gfx_init(lua_State *L) {
   nlog("Loading: gfx API");
   lua_newtable(L);
@@ -220,6 +266,13 @@ int gfx_init(lua_State *L) {
   lua_setfield(L, -2, "line");
   lua_pushcfunction(L, gfx_line_ex);
   lua_setfield(L, -2, "line_ex");
+  
+  lua_pushcfunction(L, gfx_tri);
+  lua_setfield(L, -2, "tri");
+  lua_pushcfunction(L, gfx_tri_fill);
+  lua_setfield(L, -2, "tri_fill");
+  lua_pushcfunction(L, gfx_tri_ex);
+  lua_setfield(L, -2, "tri_ex");
   
   lua_setglobal(L, "gfx");
   return 0;

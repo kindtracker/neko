@@ -72,6 +72,21 @@ int gline(int x1, int y1, int x2, int y2, int t, int r, int g, int b, int a) {
   DrawLineEx((Vector2){x1, y1}, (Vector2){x2, y2}, t, c);
 }
 
+int gtri(int x1, int y1, int x2, int y2, int x3, int y3, int t, int r, int g, int b, int a) {
+  Color c = {r, g, b, a};
+  DrawLineEx((Vector2){x1, y1}, (Vector2){x2, y2}, t, c);
+  DrawLineEx((Vector2){x2, y2}, (Vector2){x3, y3}, t, c);
+  DrawLineEx((Vector2){x3, y3}, (Vector2){x1, y1}, t, c);
+}
+
+int gtri_fill(int x1, int y1, int x2, int y2, int x3, int y3, int r, int g, int b, int a) {
+  Color c = {r, g, b, a};
+  Vector2 v1 = (Vector2){x1, y1};
+  Vector2 v2 = (Vector2){x2, y2};
+  Vector2 v3 = (Vector2){x3, y3};
+  DrawTriangle(v1, v2, v3, c);
+}
+
 int gclear(int r, int g, int b){
   Color c = {r, g, b, 255};
   ClearBackground(c);
