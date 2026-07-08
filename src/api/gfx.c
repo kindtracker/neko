@@ -58,7 +58,47 @@ int gfx_text_ex(lua_State *L) {
   gfx_color c = get_color(color);
 
   float cr = r * 57.2958f;
-  gtext(text, x, y, scale * s, cr, c.r, c.g, c.b, a);
+  gtext(text, scale * x, scale * y, scale * s, cr, c.r, c.g, c.b, a);
+  return 1;
+}
+
+int gfx_rect(lua_State *L) {
+  float x = luaL_checknumber(L, 1) * scale_x;
+  float y = luaL_checknumber(L, 2) * scale_y;
+  float w = luaL_checknumber(L, 3);
+  float h = luaL_checknumber(L, 4);
+  int color = (int)luaL_checknumber(L, 5);
+  int a = luaL_optnumber(L, 6, 1.0f) * 255.0f;
+  gfx_color c = get_color(color);
+
+  grect(x, y, w, h, scale, c.r, c.g, c.b, a);
+  return 1;
+}
+
+int gfx_rect_fill(lua_State *L) {
+  float x = luaL_checknumber(L, 1) * scale_x;
+  float y = luaL_checknumber(L, 2) * scale_y;
+  float w = luaL_checknumber(L, 3);
+  float h = luaL_checknumber(L, 4);
+  int color = (int)luaL_checknumber(L, 5);
+  int a = luaL_optnumber(L, 6, 1.0f) * 255.0f;
+  gfx_color c = get_color(color);
+
+  grect_fill(x, y, w, h, c.r, c.g, c.b, a);
+  return 1;
+}
+
+int gfx_rect_ex(lua_State *L) {
+  float x = luaL_checknumber(L, 1) * scale_x;
+  float y = luaL_checknumber(L, 2) * scale_y;
+  float w = luaL_checknumber(L, 3);
+  float h = luaL_checknumber(L, 4);
+  float thickness = luaL_checknumber(L, 5);
+  int color = (int)luaL_checknumber(L, 6);
+  int a = luaL_optnumber(L, 7, 1.0f) * 255.0f;
+  gfx_color c = get_color(color);
+
+  grect(x, y, w, h, thickness, c.r, c.g, c.b, a);
   return 1;
 }
 
@@ -100,6 +140,12 @@ int gfx_init(lua_State *L) {
   lua_setfield(L, -2, "text");
   lua_pushcfunction(L, gfx_text_ex);
   lua_setfield(L, -2, "text_ex");
+  lua_pushcfunction(L, gfx_rect);
+  lua_setfield(L, -2, "rect");
+  lua_pushcfunction(L, gfx_rect_fill);
+  lua_setfield(L, -2, "rect_fill");
+  lua_pushcfunction(L, gfx_rect_ex);
+  lua_setfield(L, -2, "rect_ex");
   
   lua_setglobal(L, "gfx");
   return 0;

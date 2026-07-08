@@ -18,6 +18,19 @@ int gtext(const char *text, int x, int y, int fs, int ro, int r, int g, int b, i
   return 0;
 } 
 
+int grect(int x, int y, int w, int h, int thick, int r, int g, int b, int a) {
+  Color c = {r, g, b, a};
+  Rectangle rect = {x, y, w, h};
+  DrawRectangleLinesEx(rect, thick, c);
+  return 0;
+}
+
+int grect_fill(int x, int y, int w, int h, int r, int g, int b, int a) {
+  Color c = {r, g, b, a};
+  DrawRectangle(x, y, w, h, c);
+  return 0;
+}
+
 int gclear(int r, int g, int b){
   Color c = {r, g, b, 255};
   ClearBackground(c);

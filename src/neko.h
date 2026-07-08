@@ -19,6 +19,8 @@ int gbegin();
 int gend();
 int gclear(int r, int g, int b);
 int gtext(const char *text, int x, int y, int fs, int ro, int r, int g, int b, int a);
+int grect(int x, int y, int w, int h, int thick, int r, int g, int b, int a);
+int grect_fill(int x, int y, int w, int h, int r, int g, int b, int a);
 
 int gfx_init(lua_State *L);
 
