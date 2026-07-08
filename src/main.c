@@ -56,8 +56,8 @@ int neko_launch(const char *fname) {
   lua_pop(L, 1);
 
   ginit_window("Neko");
-  SetTargetFPS(24);
-  while (!WindowShouldClose()) {
+  gset_fps(24);
+  while (!gshould_stop()) {
     gbegin();
     if (_drawe) {
       lua_getglobal(L, "_draw");
@@ -65,6 +65,8 @@ int neko_launch(const char *fname) {
     }
     gend();
   }
+  lua_close(L);
+  gclose_window();
   return 0;
 }
 
@@ -74,9 +76,9 @@ int main(int argc, char **argv) {
   char *fname = "main.lua";
   for (int i = 1; i < argc; i++) {
     const char *arg = argv[i];
-    char *dot = strrchr(arg, '.');
+    const char *dot = strrchr(arg, '.');
     if (dot && !strcmp(dot, ".lua")) {
-      fname = arg;   
+      fname = (char *)arg;   
     }
   }
 

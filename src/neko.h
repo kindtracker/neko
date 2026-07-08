@@ -14,6 +14,11 @@ void nerror(const char *format, ...);
 void nfatal(const char *format, ...);
 
 int ginit_window(const char *title);
+int gclose_window();
+int gset_fps(int fps);
+float gdelta_time();
+double gelapsed();
+bool gshould_stop();
 int ginit();
 int gbegin();
 int gend();

@@ -7,6 +7,28 @@ int ginit_window(const char *title) {
   return 0;
 }
 
+int gclose_window() {
+  CloseWindow();
+  return 0;
+}
+
+float gdelta_time() {
+  return GetFrameTime(); 
+}
+
+double gelapsed() {
+  return GetTime(); 
+}
+
+int gset_fps(int fps) {
+  SetTargetFPS(fps);
+  return 0;
+}
+
+bool gshould_stop() {
+  return WindowShouldClose();
+}
+
 int gtext(const char *text, int x, int y, int fs, int ro, int r, int g, int b, int a) {
   Color c = {r, g, b, a};
   Vector2 origin = (Vector2){0, 0};
