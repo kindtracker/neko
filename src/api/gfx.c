@@ -44,7 +44,7 @@ int gfx_text(lua_State *L) {
   gfx_color c = get_color(color);
 
   gtext(text, x, y, scale, 0, c.r, c.g, c.b, a);
-  return 1;
+  return 0;
 }
 
 int gfx_text_ex(lua_State *L) {
@@ -58,48 +58,48 @@ int gfx_text_ex(lua_State *L) {
   gfx_color c = get_color(color);
 
   float cr = r * 57.2958f;
-  gtext(text, scale * x, scale * y, scale * s, cr, c.r, c.g, c.b, a);
-  return 1;
+  gtext(text, x, y, scale * s, cr, c.r, c.g, c.b, a);
+  return 0;
 }
 
 int gfx_rect(lua_State *L) {
   float x = luaL_checknumber(L, 1) * scale_x;
   float y = luaL_checknumber(L, 2) * scale_y;
-  float w = luaL_checknumber(L, 3);
-  float h = luaL_checknumber(L, 4);
+  float w = luaL_checknumber(L, 3) * scale_x;
+  float h = luaL_checknumber(L, 4) * scale_y;
   int color = (int)luaL_checknumber(L, 5);
   int a = luaL_optnumber(L, 6, 1.0f) * 255.0f;
   gfx_color c = get_color(color);
 
   grect(x, y, w, h, scale, c.r, c.g, c.b, a);
-  return 1;
+  return 0;
 }
 
 int gfx_rect_fill(lua_State *L) {
   float x = luaL_checknumber(L, 1) * scale_x;
   float y = luaL_checknumber(L, 2) * scale_y;
-  float w = luaL_checknumber(L, 3);
-  float h = luaL_checknumber(L, 4);
+  float w = luaL_checknumber(L, 3) * scale_x;
+  float h = luaL_checknumber(L, 4) * scale_y;
   int color = (int)luaL_checknumber(L, 5);
   int a = luaL_optnumber(L, 6, 1.0f) * 255.0f;
   gfx_color c = get_color(color);
 
   grect_fill(x, y, w, h, c.r, c.g, c.b, a);
-  return 1;
+  return 0;
 }
 
 int gfx_rect_ex(lua_State *L) {
   float x = luaL_checknumber(L, 1) * scale_x;
   float y = luaL_checknumber(L, 2) * scale_y;
-  float w = luaL_checknumber(L, 3);
-  float h = luaL_checknumber(L, 4);
+  float w = luaL_checknumber(L, 3) * scale_x;
+  float h = luaL_checknumber(L, 4) * scale_y;
   float t = luaL_checknumber(L, 5);
   int color = (int)luaL_checknumber(L, 6);
   int a = luaL_optnumber(L, 7, 1.0f) * 255.0f;
   gfx_color c = get_color(color);
 
   grect(x, y, w, h, t, c.r, c.g, c.b, a);
-  return 1;
+  return 0;
 }
 
 int gfx_circ(lua_State *L) {
@@ -111,7 +111,7 @@ int gfx_circ(lua_State *L) {
   gfx_color c = get_color(color);
 
   gcirc(x, y, scale, r, c.r, c.g, c.b, a);
-  return 1;
+  return 0;
 }
 
 int gfx_circ_fill(lua_State *L) {
@@ -123,7 +123,7 @@ int gfx_circ_fill(lua_State *L) {
   gfx_color c = get_color(color);
 
   gcirc_fill(x, y, r, c.r, c.g, c.b, a);
-  return 1;
+  return 0;
 }
 
 int gfx_circ_ex(lua_State *L) {
@@ -136,7 +136,7 @@ int gfx_circ_ex(lua_State *L) {
   gfx_color c = get_color(color);
 
   gcirc(x, y, t, r, c.r, c.g, c.b, a);
-  return 1;
+  return 0;
 }
 
 int gfx_line(lua_State *L) {
