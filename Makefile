@@ -2,7 +2,7 @@ CC = cc
 CFLAGS = -O0 -Wall -Wextra -Isrc
 LIBS = -lm -lraylib
 
-ASSET = asset
+ASSETS = assets
 SRC = src lua-5.5.0/src
 BUILD = build
 OUT = $(BUILD)/neko
@@ -17,7 +17,7 @@ clean:
 	rm -rf $(BUILD)/*
 
 compile: $(OUT)
-	cp -R $(ASSET) $(BUILD)/.
+	cp -R $(ASSETS) $(BUILD)/.
 
 run:
 	./$(OUT) examples/hello.lua
