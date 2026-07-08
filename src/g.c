@@ -2,14 +2,12 @@
 
 Font font;
 
-int ginit_window(const char *title) {
+void ginit_window(const char *title) {
   InitWindow(640, 400, title);
-  return 0;
 }
 
-int gclose_window() {
+void gclose_window() {
   CloseWindow();
-  return 0;
 }
 
 float gdelta_time() {
@@ -20,16 +18,15 @@ double gelapsed() {
   return GetTime(); 
 }
 
-int gset_fps(int fps) {
+void gset_fps(int fps) {
   SetTargetFPS(fps);
-  return 0;
 }
 
 bool gshould_stop() {
   return WindowShouldClose();
 }
 
-int gtext(const char *text, int x, int y, int fs, int ro, int r, int g, int b, int a) {
+void gtext(const char *text, int x, int y, int fs, int ro, int r, int g, int b, int a) {
   Color c = {r, g, b, a};
   Vector2 origin = (Vector2){0, 0};
   if (ro != 0.0f) {
@@ -37,49 +34,44 @@ int gtext(const char *text, int x, int y, int fs, int ro, int r, int g, int b, i
     origin = (Vector2){textsz.x / 2.0f, textsz.y / 2.0f};
   }
   DrawTextPro(font, text, (Vector2){x, y}, origin, ro, fs * 10, 6, c);
-  return 0;
 } 
 
-int grect(int x, int y, int w, int h, int t, int r, int g, int b, int a) {
+void grect(int x, int y, int w, int h, int t, int r, int g, int b, int a) {
   Color c = {r, g, b, a};
   Rectangle rect = {x, y, w, h};
   DrawRectangleLinesEx(rect, t, c);
-  return 0;
 }
 
-int grect_fill(int x, int y, int w, int h, int r, int g, int b, int a) {
+void grect_fill(int x, int y, int w, int h, int r, int g, int b, int a) {
   Color c = {r, g, b, a};
   DrawRectangle(x, y, w, h, c);
-  return 0;
 }
 
-int gcirc(int x, int y, int t, int ra, int r, int g, int b, int a) {
+void gcirc(int x, int y, int t, int ra, int r, int g, int b, int a) {
   Color c = {r, g, b, a};
   for (int i = 0; i < t; i++) {
     DrawCircleLines(x, y, ra - i, c);
   }
-  return 0;
 }
 
-int gcirc_fill(int x, int y, int ra, int r, int g, int b, int a) {
+void gcirc_fill(int x, int y, int ra, int r, int g, int b, int a) {
   Color c = {r, g, b, a};
   DrawCircle(x, y, ra, c);
-  return 0;
 }
 
-int gline(int x1, int y1, int x2, int y2, int t, int r, int g, int b, int a) {
+void gline(int x1, int y1, int x2, int y2, int t, int r, int g, int b, int a) {
   Color c = {r, g, b, a};
   DrawLineEx((Vector2){x1, y1}, (Vector2){x2, y2}, t, c);
 }
 
-int gtri(int x1, int y1, int x2, int y2, int x3, int y3, int t, int r, int g, int b, int a) {
+void gtri(int x1, int y1, int x2, int y2, int x3, int y3, int t, int r, int g, int b, int a) {
   Color c = {r, g, b, a};
   DrawLineEx((Vector2){x1, y1}, (Vector2){x2, y2}, t, c);
   DrawLineEx((Vector2){x2, y2}, (Vector2){x3, y3}, t, c);
   DrawLineEx((Vector2){x3, y3}, (Vector2){x1, y1}, t, c);
 }
 
-int gtri_fill(int x1, int y1, int x2, int y2, int x3, int y3, int r, int g, int b, int a) {
+void gtri_fill(int x1, int y1, int x2, int y2, int x3, int y3, int r, int g, int b, int a) {
   Color c = {r, g, b, a};
   Vector2 v1 = (Vector2){x1, y1};
   Vector2 v2 = (Vector2){x2, y2};
@@ -87,20 +79,17 @@ int gtri_fill(int x1, int y1, int x2, int y2, int x3, int y3, int r, int g, int 
   DrawTriangle(v1, v2, v3, c);
 }
 
-int gclear(int r, int g, int b){
+void gclear(int r, int g, int b){
   Color c = {r, g, b, 255};
   ClearBackground(c);
-  return 0;
 }
 
-int gbegin() {
+void gbegin() {
   BeginDrawing();
-  return 0;
 }
 
-int gend() {
+void gend() {
   EndDrawing();
-  return 0;
 }
 
 int ginit() {
