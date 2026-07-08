@@ -13,12 +13,20 @@ int gtext(const char *text, int x, int y, int fs, int ro, int r, int g, int b, i
   return 0;
 }
 
+int gclear(int r, int g, int b){
+  Color c = {r, g, b, 255};
+  ClearBackground(c);
+  return 0;
+}
+
 int gbegin() {
   BeginDrawing();
+  return 0;
 }
 
 int gend() {
   EndDrawing();
+  return 0;
 }
 
 int ginit() {

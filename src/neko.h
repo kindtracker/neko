@@ -17,6 +17,7 @@ int ginit_window(const char *title);
 int ginit();
 int gbegin();
 int gend();
+int gclear(int r, int g, int b);
 int gtext(const char *text, int x, int y, int fs, int ro, int r, int g, int b, int a);
 
 int gfx_init(lua_State *L);

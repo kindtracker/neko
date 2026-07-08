@@ -29,6 +29,12 @@ gfx_color get_color(int num) {
   return clr_pallete[num];
 }
 
+int gfx_clear(lua_State *L) {
+  int color = (int)luaL_checknumber(L, 1);
+  gfx_color c = get_color(color);
+  gclear(c.r, c.g, c.b);
+}
+
 int gfx_text(lua_State *L) {
   const char *text = luaL_checkstring(L, 1);
   float x = luaL_checknumber(L, 2) * scale_x;
@@ -75,6 +81,8 @@ int gfx_init(lua_State *L) {
 
   lua_pushcfunction(L, gfx_text);
   lua_setfield(L, -2, "text");
+  lua_pushcfunction(L, gfx_clear);
+  lua_setfield(L, -2, "clear");
   
   lua_setglobal(L, "gfx");
   return 0;

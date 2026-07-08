@@ -56,7 +56,7 @@ int neko_launch(const char *fname) {
   lua_pop(L, 1);
 
   ginit_window("Neko");
-  SetTargetFPS(3);
+  SetTargetFPS(24);
   while (!WindowShouldClose()) {
     gbegin();
     if (_drawe) {
