@@ -9,9 +9,14 @@ int ginit_window(const char *title) {
 
 int gtext(const char *text, int x, int y, int fs, int ro, int r, int g, int b, int a) {
   Color c = {r, g, b, a};
-  DrawTextPro(font, text, (Vector2){x, y}, (Vector2){0, 0}, ro, fs * 10, 6, c);
+  Vector2 origin = (Vector2){0, 0};
+  if (ro != 0.0f) {
+    Vector2 textsz = MeasureTextEx(font, text, fs * 10, 6);
+    origin = (Vector2){textsz.x / 2.0f, textsz.y / 2.0f};
+  }
+  DrawTextPro(font, text, (Vector2){x, y}, origin, ro, fs * 10, 6, c);
   return 0;
-}
+} 
 
 int gclear(int r, int g, int b){
   Color c = {r, g, b, 255};

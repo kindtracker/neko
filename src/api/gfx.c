@@ -47,6 +47,21 @@ int gfx_text(lua_State *L) {
   return 1;
 }
 
+int gfx_text_ex(lua_State *L) {
+  const char *text = luaL_checkstring(L, 1);
+  float x = luaL_checknumber(L, 2) * scale_x;
+  float y = luaL_checknumber(L, 3) * scale_y;
+  float s = luaL_checknumber(L, 4);
+  float r = luaL_checknumber(L, 5);
+  int color = (int)luaL_checknumber(L, 6);
+  int a = luaL_optnumber(L, 7, 1.0f) * 255.0f;
+  gfx_color c = get_color(color);
+
+  float cr = r * 57.2958f;
+  gtext(text, x, y, scale * s, cr, c.r, c.g, c.b, a);
+  return 1;
+}
+
 int gfx_init(lua_State *L) {
   nlog("Loading: gfx API");
   lua_newtable(L);
@@ -79,10 +94,12 @@ int gfx_init(lua_State *L) {
     lua_setfield(L, -2, colors[i].name);
   }
 
-  lua_pushcfunction(L, gfx_text);
-  lua_setfield(L, -2, "text");
   lua_pushcfunction(L, gfx_clear);
   lua_setfield(L, -2, "clear");
+  lua_pushcfunction(L, gfx_text);
+  lua_setfield(L, -2, "text");
+  lua_pushcfunction(L, gfx_text_ex);
+  lua_setfield(L, -2, "text_ex");
   
   lua_setglobal(L, "gfx");
   return 0;

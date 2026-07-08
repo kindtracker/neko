@@ -18,7 +18,7 @@ _draw()
 
 gfx.clear(color)
 gfx.text(text, x, y, color, alpha?)
-gfx.text_ex(text, x, y, scale, rotation, color, alpha)
+gfx.text_ex(text, x, y, scale, rotation, color, alpha?)
 gfx.rect(x, y, w, h, color, alpha?)
 gfx.rect_fill(x, y, w, h, color, alpha?)
 gfx.rect_ex(x, y, w, h, thickness, color, alpha?)
