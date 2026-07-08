@@ -139,6 +139,33 @@ int gfx_circ_ex(lua_State *L) {
   return 1;
 }
 
+int gfx_line(lua_State *L) {
+  float x1 = luaL_checknumber(L, 1) * scale_x;
+  float y1 = luaL_checknumber(L, 2) * scale_y;
+  float x2 = luaL_checknumber(L, 3) * scale_x;
+  float y2 = luaL_checknumber(L, 4) * scale_y;
+  int color = (int)luaL_checknumber(L, 5);
+  int a = luaL_optnumber(L, 6, 1.0f) * 255.0f;
+  gfx_color c = get_color(color);
+  
+  gline(x1, y1, x2, y2, scale, c.r, c.g, c.b, a);
+  return 0;
+}
+
+int gfx_line_ex(lua_State *L) {
+  float x1 = luaL_checknumber(L, 1) * scale_x;
+  float y1 = luaL_checknumber(L, 2) * scale_y;
+  float x2 = luaL_checknumber(L, 3) * scale_x;
+  float y2 = luaL_checknumber(L, 4) * scale_y;
+  float t = luaL_checknumber(L, 5) * scale;
+  int color = (int)luaL_checknumber(L, 6);
+  int a = luaL_optnumber(L, 7, 1.0f) * 255.0f;
+  gfx_color c = get_color(color);
+  
+  gline(x1, y1, x2, y2, t, c.r, c.g, c.b, a);
+  return 0;
+}
+
 int gfx_init(lua_State *L) {
   nlog("Loading: gfx API");
   lua_newtable(L);
@@ -189,6 +216,10 @@ int gfx_init(lua_State *L) {
   lua_setfield(L, -2, "circ_fill");
   lua_pushcfunction(L, gfx_circ_ex);
   lua_setfield(L, -2, "circ_ex");
+  lua_pushcfunction(L, gfx_line);
+  lua_setfield(L, -2, "line");
+  lua_pushcfunction(L, gfx_line_ex);
+  lua_setfield(L, -2, "line_ex");
   
   lua_setglobal(L, "gfx");
   return 0;

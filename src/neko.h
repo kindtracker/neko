@@ -23,6 +23,7 @@ int grect(int x, int y, int w, int h, int thick, int r, int g, int b, int a);
 int grect_fill(int x, int y, int w, int h, int r, int g, int b, int a);
 int gcirc(int x, int y, int t, int ra, int r, int g, int b, int a);
 int gcirc_fill(int x, int y, int ra, int r, int g, int b, int a);
+int gline(int x1, int y1, int x2, int y2, int t, int r, int g, int b, int a);
 
 int gfx_init(lua_State *L);
 

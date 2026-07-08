@@ -45,6 +45,11 @@ int gcirc_fill(int x, int y, int ra, int r, int g, int b, int a) {
   return 0;
 }
 
+int gline(int x1, int y1, int x2, int y2, int t, int r, int g, int b, int a) {
+  Color c = {r, g, b, a};
+  DrawLineEx((Vector2){x1, y1}, (Vector2){x2, y2}, t, c);
+}
+
 int gclear(int r, int g, int b){
   Color c = {r, g, b, 255};
   ClearBackground(c);

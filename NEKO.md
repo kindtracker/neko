@@ -29,6 +29,7 @@ gfx.line(x1, y1, x2, y2, color, alpha?)
 gfx.line_ex(x1, y1, x2, y2, thickness, color, alpha?)
 gfx.tri(x1, y1, x2, y2, x3, y3, color, alpha?)
 gfx.tri_fill(x1, y1, x2, y2, x3, y3, color, alpha?)
+gfx.tri_ex(x1, y1, x2, y2, x3, y3, thickness, color, alpha?)
 gfx.px(x, y, color, alpha?)
 
 -- Palette (PICO-8, 16 colors)
