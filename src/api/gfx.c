@@ -212,6 +212,17 @@ int gfx_tri_ex(lua_State *L) {
   return 0;
 }
 
+int gfx_px(lua_State *L) {
+  float x = luaL_checknumber(L, 1) * scale_x;
+  float y = luaL_checknumber(L, 2) * scale_y;
+  int color = (int)luaL_checknumber(L, 3);
+  int a = luaL_optnumber(L, 4, 1.0f) * 255.0f;
+  gfx_color c = get_color(color);
+
+  grect_fill(x, y, scale_x, scale_y, c.r, c.g, c.b, a);
+  return 0;
+}
+
 int gfx_init(lua_State *L) {
   nlog("Loading: gfx API");
   lua_newtable(L);
@@ -266,13 +277,14 @@ int gfx_init(lua_State *L) {
   lua_setfield(L, -2, "line");
   lua_pushcfunction(L, gfx_line_ex);
   lua_setfield(L, -2, "line_ex");
-  
   lua_pushcfunction(L, gfx_tri);
   lua_setfield(L, -2, "tri");
   lua_pushcfunction(L, gfx_tri_fill);
   lua_setfield(L, -2, "tri_fill");
   lua_pushcfunction(L, gfx_tri_ex);
   lua_setfield(L, -2, "tri_ex");
+  lua_pushcfunction(L, gfx_px);
+  lua_setfield(L, -2, "px");
   
   lua_setglobal(L, "gfx");
   return 0;
