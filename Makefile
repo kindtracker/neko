@@ -10,7 +10,7 @@ OUT = $(BUILD)/neko
 CSRC = $(shell find $(SRC) -type f -name '*.c' | grep -v -E '(lua|luac)\.c')
 COBJ = $(patsubst %.c,$(BUILD)/%.o,$(CSRC))
 
-PREFIX ?= ($HOME)/.neko
+PREFIX ?= $(HOME)/.neko
 INSTALL_BIN = $(PREFIX)/bin
 INSTALL_DATA = $(PREFIX)/assets
 
@@ -30,6 +30,12 @@ install: $(OUT)
 	mkdir -p $(INSTALL_BIN) $(INSTALL_DATA)
 	cp $(OUT) $(INSTALL_BIN)/neko
 	cp -R $(ASSETS) $(INSTALL_DATA)/.
+
+	@echo ""
+	@echo "Installation complete!"
+	@echo "Add this to your shell profile:"
+	@echo "  export PATH=\$$HOME/.neko/bin:\$$PATH"
+	@echo ""
 
 uninstall:
 	rm -f $(INSTALL_BIN)/neko
