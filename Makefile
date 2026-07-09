@@ -20,7 +20,7 @@ compile: $(OUT)
 	cp -R $(ASSETS) $(BUILD)/.
 
 run:
-	./$(OUT) examples/hello.lua
+	./$(OUT) examples/pal.lua
 
 $(OUT): $(COBJ)
 	$(CC) $(CFLAGS) -o $(OUT) $(COBJ) $(LIBS)

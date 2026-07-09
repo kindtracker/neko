@@ -17,20 +17,22 @@ _draw()
 -- Graphics
 
 gfx.clear(color)
-gfx.text(text, x, y, color, alpha?)
-gfx.text_ex(text, x, y, scale, rotation, color, alpha?)
-gfx.rect(x, y, w, h, color, alpha?)
-gfx.rect_fill(x, y, w, h, color, alpha?)
-gfx.rect_ex(x, y, w, h, thickness, color, alpha?)
-gfx.circ(x, y, r, color, alpha?)
-gfx.circ_fill(x, y, r, color, alpha?)
-gfx.circ_ex(x, y, r, thickness, color, alpha?)
-gfx.line(x1, y1, x2, y2, color, alpha?)
-gfx.line_ex(x1, y1, x2, y2, thickness, color, alpha?)
-gfx.tri(x1, y1, x2, y2, x3, y3, color, alpha?)
-gfx.tri_fill(x1, y1, x2, y2, x3, y3, color, alpha?)
-gfx.tri_ex(x1, y1, x2, y2, x3, y3, thickness, color, alpha?)
+gfx.text(text, x, y, color?, alpha?)
+gfx.text_ex(text, x, y, scale, rotation, color?, alpha?)
+gfx.rect(x, y, w, h, color?, alpha?)
+gfx.rect_fill(x, y, w, h, color?, alpha?)
+gfx.rect_ex(x, y, w, h, thickness, color?, alpha?)
+gfx.circ(x, y, r, color?, alpha?)
+gfx.circ_fill(x, y, r, color?, alpha?)
+gfx.circ_ex(x, y, r, thickness, color?, alpha?)
+gfx.line(x1, y1, x2, y2, color?, alpha?)
+gfx.line_ex(x1, y1, x2, y2, thickness, color?, alpha?)
+gfx.tri(x1, y1, x2, y2, x3, y3, color?, alpha?)
+gfx.tri_fill(x1, y1, x2, y2, x3, y3, color?, alpha?)
+gfx.tri_ex(x1, y1, x2, y2, x3, y3, thickness, color?, alpha?)
 gfx.px(x, y, color, alpha?)
+gfx.pal(idx, r, g, b) 
+gfx.get_pal(idx) -- returns (r, g, b)
 
 -- Palette (PICO-8, 16 colors)
 
@@ -41,3 +43,10 @@ gfx.COLOR_RED,   gfx.COLOR_ORANGE,    gfx.COLOR_YELLOW,     gfx.COLOR_GREEN
 gfx.COLOR_BLUE,  gfx.COLOR_INDIGO,    gfx.COLOR_PINK,       gfx.COLOR_PEACH
 
 ```
+
+### `gfx`
+
+- `color` argument - default is -1
+- `gfx.tri_ex` same as `gfx.tri` but with thickness
+- `gfx.pal` - set a custom color in the palette (below -1 is not allowed)
+- `gfx.get_pal` - returns color from the palette

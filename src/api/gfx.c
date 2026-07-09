@@ -1,11 +1,14 @@
 #include <stdlib.h> 
+#include <string.h>
 #include "neko.h"
 
 int scale_x = 2;
 int scale_y = 2;
 int scale = 2;
 
-gfx_color clr_pallete[] = {
+gfx_color sel_color = {0, 0, 0}; 
+
+gfx_color default_color_pal[] = {
   [0]  = { 255, 255, 255 }, // COLOR_TRUE_WHITE
   [1]  = { 0,   0,   0   }, // COLOR_BLACK
   [2]  = { 29,  43,  83  }, // COLOR_DARK_BLUE
@@ -25,21 +28,33 @@ gfx_color clr_pallete[] = {
   [16] = { 255, 204, 170 }, // COLOR_PEACH
 };
 
+gfx_color *color_pal = NULL;
+
+size_t color_pal_size = 17;
+
 gfx_color get_color(int num) {
-  return clr_pallete[num];
+  if (num < -1) {
+    nerror("get_color: invalid index %d", num);
+    return (gfx_color){255, 0, 255};
+  }
+  if (num == -1) {
+    return sel_color;
+  }
+  return color_pal[num];
 }
 
 int gfx_clear(lua_State *L) {
-  int color = (int)luaL_checknumber(L, 1);
+  int color = (int)luaL_optnumber(L, 1, -1);
   gfx_color c = get_color(color);
   gclear(c.r, c.g, c.b);
+  return 0;
 }
 
 int gfx_text(lua_State *L) {
   const char *text = luaL_checkstring(L, 1);
   float x = luaL_checknumber(L, 2) * scale_x;
   float y = luaL_checknumber(L, 3) * scale_y;
-  int color = (int)luaL_checknumber(L, 4);
+  int color = (int)luaL_optnumber(L, 4, -1);
   int a = luaL_optnumber(L, 5, 1.0f) * 255.0f;
   gfx_color c = get_color(color);
 
@@ -53,7 +68,7 @@ int gfx_text_ex(lua_State *L) {
   float y = luaL_checknumber(L, 3) * scale_y;
   float s = luaL_checknumber(L, 4);
   float r = luaL_checknumber(L, 5);
-  int color = (int)luaL_checknumber(L, 6);
+  int color = (int)luaL_optnumber(L, 6, -1);
   int a = luaL_optnumber(L, 7, 1.0f) * 255.0f;
   gfx_color c = get_color(color);
 
@@ -67,7 +82,7 @@ int gfx_rect(lua_State *L) {
   float y = luaL_checknumber(L, 2) * scale_y;
   float w = luaL_checknumber(L, 3) * scale_x;
   float h = luaL_checknumber(L, 4) * scale_y;
-  int color = (int)luaL_checknumber(L, 5);
+  int color = (int)luaL_optnumber(L, 5, -1);
   int a = luaL_optnumber(L, 6, 1.0f) * 255.0f;
   gfx_color c = get_color(color);
 
@@ -80,7 +95,7 @@ int gfx_rect_fill(lua_State *L) {
   float y = luaL_checknumber(L, 2) * scale_y;
   float w = luaL_checknumber(L, 3) * scale_x;
   float h = luaL_checknumber(L, 4) * scale_y;
-  int color = (int)luaL_checknumber(L, 5);
+  int color = (int)luaL_optnumber(L, 5, -1);
   int a = luaL_optnumber(L, 6, 1.0f) * 255.0f;
   gfx_color c = get_color(color);
 
@@ -94,7 +109,7 @@ int gfx_rect_ex(lua_State *L) {
   float w = luaL_checknumber(L, 3) * scale_x;
   float h = luaL_checknumber(L, 4) * scale_y;
   float t = luaL_checknumber(L, 5);
-  int color = (int)luaL_checknumber(L, 6);
+  int color = (int)luaL_optnumber(L, 6, -1);
   int a = luaL_optnumber(L, 7, 1.0f) * 255.0f;
   gfx_color c = get_color(color);
 
@@ -106,7 +121,7 @@ int gfx_circ(lua_State *L) {
   float x = luaL_checknumber(L, 1) * scale_x;
   float y = luaL_checknumber(L, 2) * scale_y;
   float r = luaL_checknumber(L, 3) * scale;
-  int color = (int)luaL_checknumber(L, 4);
+  int color = (int)luaL_optnumber(L, 4, -1);
   int a = luaL_optnumber(L, 5, 1.0f) * 255.0f;
   gfx_color c = get_color(color);
 
@@ -118,7 +133,7 @@ int gfx_circ_fill(lua_State *L) {
   float x = luaL_checknumber(L, 1) * scale_x;
   float y = luaL_checknumber(L, 2) * scale_y;
   float r = luaL_checknumber(L, 3) * scale;
-  int color = (int)luaL_checknumber(L, 4);
+  int color = (int)luaL_optnumber(L, 4, -1);
   int a = luaL_optnumber(L, 5, 1.0f) * 255.0f;
   gfx_color c = get_color(color);
 
@@ -131,7 +146,7 @@ int gfx_circ_ex(lua_State *L) {
   float y = luaL_checknumber(L, 2) * scale_y;
   float r = luaL_checknumber(L, 3) * scale;
   float t = luaL_checknumber(L, 4) * scale;
-  int color = (int)luaL_checknumber(L, 5);
+  int color = (int)luaL_optnumber(L, 5, -1);
   int a = luaL_optnumber(L, 6, 1.0f) * 255.0f;
   gfx_color c = get_color(color);
 
@@ -144,7 +159,7 @@ int gfx_line(lua_State *L) {
   float y1 = luaL_checknumber(L, 2) * scale_y;
   float x2 = luaL_checknumber(L, 3) * scale_x;
   float y2 = luaL_checknumber(L, 4) * scale_y;
-  int color = (int)luaL_checknumber(L, 5);
+  int color = (int)luaL_optnumber(L, 5, -1);
   int a = luaL_optnumber(L, 6, 1.0f) * 255.0f;
   gfx_color c = get_color(color);
   
@@ -158,7 +173,7 @@ int gfx_line_ex(lua_State *L) {
   float x2 = luaL_checknumber(L, 3) * scale_x;
   float y2 = luaL_checknumber(L, 4) * scale_y;
   float t = luaL_checknumber(L, 5) * scale;
-  int color = (int)luaL_checknumber(L, 6);
+  int color = (int)luaL_optnumber(L, 6, -1);
   int a = luaL_optnumber(L, 7, 1.0f) * 255.0f;
   gfx_color c = get_color(color);
   
@@ -173,7 +188,7 @@ int gfx_tri(lua_State *L) {
   float y2 = luaL_checknumber(L, 4) * scale_y;
   float x3 = luaL_checknumber(L, 5) * scale_x;
   float y3 = luaL_checknumber(L, 6) * scale_y;
-  int color = (int)luaL_checknumber(L, 7);
+  int color = (int)luaL_optnumber(L, 7, -1);
   int a = luaL_optnumber(L, 8, 1.0f) * 255.0f;
   gfx_color c = get_color(color);
   
@@ -188,7 +203,7 @@ int gfx_tri_fill(lua_State *L) {
   float y2 = luaL_checknumber(L, 4) * scale_y;
   float x3 = luaL_checknumber(L, 5) * scale_x;
   float y3 = luaL_checknumber(L, 6) * scale_y;
-  int color = (int)luaL_checknumber(L, 7);
+  int color = (int)luaL_optnumber(L, 7, -1);
   int a = luaL_optnumber(L, 8, 1.0f) * 255.0f;
   gfx_color c = get_color(color);
   
@@ -204,7 +219,7 @@ int gfx_tri_ex(lua_State *L) {
   float x3 = luaL_checknumber(L, 5) * scale_x;
   float y3 = luaL_checknumber(L, 6) * scale_y;
   float t = luaL_checknumber(L, 7) * scale;
-  int color = (int)luaL_checknumber(L, 8);
+  int color = (int)luaL_optnumber(L, 8, -1);
   int a = luaL_optnumber(L, 9, 1.0f) * 255.0f;
   gfx_color c = get_color(color);
   
@@ -215,12 +230,70 @@ int gfx_tri_ex(lua_State *L) {
 int gfx_px(lua_State *L) {
   float x = luaL_checknumber(L, 1) * scale_x;
   float y = luaL_checknumber(L, 2) * scale_y;
-  int color = (int)luaL_checknumber(L, 3);
+  int color = (int)luaL_optnumber(L, 3, -1);
   int a = luaL_optnumber(L, 4, 1.0f) * 255.0f;
   gfx_color c = get_color(color);
 
   grect_fill(x, y, scale_x, scale_y, c.r, c.g, c.b, a);
   return 0;
+}
+
+int gfx_pal(lua_State *L) {
+  int idx = luaL_checknumber(L, 1);
+  int r = luaL_checknumber(L, 2);
+  int g = luaL_checknumber(L, 3);
+  int b = luaL_checknumber(L, 4);
+  
+  if (idx == -1) {
+    sel_color = (gfx_color){r, g, b};
+  } else if (idx > -1) {
+    if (idx > (int)color_pal_size) {
+      int new_size = (color_pal_size + 1) * 2; 
+      gfx_color *temp = realloc(color_pal, new_size * sizeof(gfx_color));
+      if (!temp) {
+        nerror("gfx.pal: memory allocation failed (%d -> %d)", color_pal_size, new_size);
+        return 0;
+      }
+
+      for (int i = color_pal_size; i < new_size; i++) {
+        temp[i] = (gfx_color){255, 0, 255};
+      }
+      color_pal = temp;
+      color_pal_size = new_size;
+    }
+    color_pal[idx] = (gfx_color){r, g, b};
+  } else {
+    nerror("gfx.pal: color index below -1 is not allowed");
+  }
+  return 0;
+}
+
+int gfx_get_pal(lua_State *L) {
+  int idx = luaL_checknumber(L, 1);
+  if (idx == -1) {
+    lua_pushnumber(L, sel_color.r);
+    lua_pushnumber(L, sel_color.g);
+    lua_pushnumber(L, sel_color.b);
+    return 3; 
+  } else if (idx > -1) {
+    if (idx > (int)color_pal_size) {
+      nerror("gfx.get_pal: index %d out of bounds (max %d)", idx, color_pal_size-1);
+      lua_pushnumber(L, 255);
+      lua_pushnumber(L, 0);
+      lua_pushnumber(L, 255);
+      return 3;
+    }
+    lua_pushnumber(L, color_pal[idx].r);
+    lua_pushnumber(L, color_pal[idx].g);
+    lua_pushnumber(L, color_pal[idx].b);
+    return 3;
+  } else {
+    nerror("gfx.get_pal: color index below -1 is not allowed");
+    lua_pushnumber(L, 255);
+    lua_pushnumber(L, 0);
+    lua_pushnumber(L, 255);
+    return 3;
+  }
 }
 
 int gfx_init(lua_State *L) {
@@ -250,10 +323,17 @@ int gfx_init(lua_State *L) {
     { "COLOR_PEACH", 16 },
   };
 
-  for (int i = 0; i < sizeof(colors) / sizeof(colors[0]); i++) {
+  for (int i = 0; i < (int)(sizeof(colors) / sizeof(colors[0])); i++) {
     lua_pushnumber(L, colors[i].idx);
     lua_setfield(L, -2, colors[i].name);
   }
+
+  color_pal = malloc(color_pal_size * sizeof(gfx_color));
+  if (!color_pal) {
+    nerror("Failed to allocate color palette");
+    return 1;
+  }
+  memcpy(color_pal, default_color_pal, color_pal_size * sizeof(gfx_color));
 
   lua_pushcfunction(L, gfx_clear);
   lua_setfield(L, -2, "clear");
@@ -285,6 +365,10 @@ int gfx_init(lua_State *L) {
   lua_setfield(L, -2, "tri_ex");
   lua_pushcfunction(L, gfx_px);
   lua_setfield(L, -2, "px");
+  lua_pushcfunction(L, gfx_pal);
+  lua_setfield(L, -2, "pal");
+  lua_pushcfunction(L, gfx_get_pal);
+  lua_setfield(L, -2, "get_pal");
   
   lua_setglobal(L, "gfx");
   return 0;
