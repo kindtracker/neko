@@ -238,6 +238,16 @@ int gfx_px(lua_State *L) {
   return 0;
 }
 
+int gfx_get_px(lua_State *L) {
+  float x = luaL_checknumber(L, 1) * scale_x;
+  float y = luaL_checknumber(L, 2) * scale_y;
+  lua_pushnumber(L, 0);
+  lua_pushnumber(L, 0);
+  lua_pushnumber(L, 0);
+  lua_pushnumber(L, 0);
+  return 4;
+}
+
 int gfx_pal(lua_State *L) {
   int idx = luaL_checknumber(L, 1);
   int r = luaL_checknumber(L, 2);

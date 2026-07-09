@@ -10,6 +10,10 @@ OUT = $(BUILD)/neko
 CSRC = $(shell find $(SRC) -type f -name '*.c' | grep -v -E '(lua|luac)\.c')
 COBJ = $(patsubst %.c,$(BUILD)/%.o,$(CSRC))
 
+PREFIX ?= ($HOME)/.neko
+INSTALL_BIN = $(PREFIX)/bin
+INSTALL_DATA = $(PREFIX)/assets
+
 all: compile
 
 clean:
@@ -21,6 +25,15 @@ compile: $(OUT)
 
 run:
 	./$(OUT) examples/pal.lua
+
+install: $(OUT)
+	mkdir -p $(INSTALL_BIN) $(INSTALL_DATA)
+	cp $(OUT) $(INSTALL_BIN)/neko
+	cp -R $(ASSETS) $(INSTALL_DATA)/.
+
+uninstall:
+	rm -f $(INSTALL_BIN)/neko
+	rm -rf $(INSTALL_DATA)
 
 $(OUT): $(COBJ)
 	$(CC) $(CFLAGS) -o $(OUT) $(COBJ) $(LIBS)
