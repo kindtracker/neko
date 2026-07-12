@@ -22,15 +22,11 @@ int neko_update(lua_State *L) {
 
 int nusagi_update(lua_State *L) {
   lua_getglobal(L, "neko");
-  if (lua_istable(L, -1)) {
-    neko_update(L);
-  }
+  neko_update(L);
   lua_setglobal(L, "neko");
   
   lua_getglobal(L, "usagi");
-  if (lua_istable(L, -1)) {
-    neko_update(L);
-  }
+  neko_update(L);
   lua_setglobal(L, "usagi");
   
   return 0;
