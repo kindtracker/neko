@@ -10,7 +10,7 @@ It provides a Lua API built on raylib.
 
 ## Install
 
-Linux, macOS:
+Linux:
 ```sh
 cd /tmp/ 
 git clone https://github.com/kindtracker/neko.git 
@@ -47,10 +47,12 @@ Neko is not done yet
 
 ```lua
 -- Info
+-- You can use usagi API as neko API
+-- usagi.GAME_W -> neko.GAME_W
 neko.GAME_W -- default: 320 
-neko.GAME_H -- default: 200
-neko.WINDOW_W -- default: 676
-neko.WINDOW_H -- default: 724
+neko.GAME_H -- default: 240
+neko.WINDOW_W -- default: 640
+neko.WINDOW_H -- default: 480
 neko.PLATFORM -- "linux"
 
 -- Callbacks
@@ -99,12 +101,12 @@ gfx.COLOR_BLUE,  gfx.COLOR_INDIGO,    gfx.COLOR_PINK,       gfx.COLOR_PEACH
 
 ## Roadmap
 
-- [] Add input API.
-- [] Add image API.
-- [] Add effects API.
-- [] Add sfx API
-- [] You can use same API from Usagi and Neko at same time.
-- [] Write games once in Lua, run on desktop and 3DS without code changes.
+- [ ] Add input API.
+- [ ] Add image API.
+- [ ] Add effects API.
+- [ ] Add sfx API
+- [ ] You can use same API from Usagi and Neko at same time.
+- [ ] Write games once in Lua, run on desktop and 3DS without code changes.
 
 ## Credits
 Neko is written in C.

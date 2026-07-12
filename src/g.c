@@ -3,7 +3,7 @@
 Font font;
 
 void ginit_window(const char *title) {
-  InitWindow(640, 400, title);
+  InitWindow(DEFAULT_WIDTH * 2, DEFAULT_HEIGHT * 2, title);
 }
 
 void gclose_window() {

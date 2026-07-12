@@ -7,6 +7,9 @@
 
 #define RELEASE_STRING "v0.1.0"
 
+#define DEFAULT_WIDTH  320
+#define DEFAULT_HEIGHT 240
+
 typedef struct { int r, g, b; } gfx_color;
 
 void nlog(const char *format, ...);
