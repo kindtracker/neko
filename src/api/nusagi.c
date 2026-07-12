@@ -2,33 +2,38 @@
 
 int neko_quit(lua_State *L) {
   uint8_t s = luaL_checknumber(L, 1);
-  char buffer[256];
-  sprintf(buffer, "exit %d", s);
-  luas = buffer;
+  luas = malloc(256);
+  sprintf(luas, "exit %d", s);
   return 0;
 }
 
 static int neko_launch(lua_State *L) {
   const char *fname = luaL_optstring(L, 1, running_fname);
-  char buffer[256];
-  sprintf(buffer, "launch %s", fname);
-  luas = buffer;
+  luas = malloc(256);
+  sprintf(luas, "launch %s", fname);
   return 0;
 }
 
 int neko_update(lua_State *L) {
   lua_pushnumber(L, gelapsed());
   lua_setfield(L, -2, "elapsed");
+  return 0;
 }
 
 int nusagi_update(lua_State *L) {
   lua_getglobal(L, "neko");
-  neko_update(L);
+  if (lua_istable(L, -1)) {
+    neko_update(L);
+  }
   lua_setglobal(L, "neko");
   
   lua_getglobal(L, "usagi");
-  neko_update(L);
+  if (lua_istable(L, -1)) {
+    neko_update(L);
+  }
   lua_setglobal(L, "usagi");
+  
+  return 0;
 }
 
 int neko_init(lua_State *L) {
@@ -38,7 +43,7 @@ int neko_init(lua_State *L) {
   lua_setfield(L, -2, "GAME_H");
 
   lua_pushnumber(L, DEFAULT_WIDTH * 2);
-  lua_setfield(L, -2, "WINDOW_H");
+  lua_setfield(L, -2, "WINDOW_W");
   lua_pushnumber(L, DEFAULT_HEIGHT * 2);
   lua_setfield(L, -2, "WINDOW_H");
 

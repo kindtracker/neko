@@ -8,12 +8,38 @@ bool is_dev = false;
 char *running_fname;
 char *luas;
 
-int lua_run(lua_State *L, int narg, int nret) {
-  int ret = lua_pcall(L, narg, nret, 0);
+/*int lua_run(lua_State *L, int narg, int nret) {
+  int ret = lua_pcall(L, narg, nret, 0);  // Just use 0, no handler
+  
   if (ret != 0) {
     const char *err = lua_tostring(L, -1);
     nerror(err);
+    lua_pop(L, 1);
   }
+  
+  return ret;
+}*/
+
+static int traceback_handler(lua_State *L) {
+  lua_getglobal(L, "debug");
+  lua_getfield(L, -1, "traceback");
+  lua_pushvalue(L, 1);
+  lua_call(L, 1, 1);
+  return 1;
+}
+
+int lua_run(lua_State *L, int narg, int nret) {
+  int hpos = lua_gettop(L) - narg;
+  lua_pushcfunction(L, traceback_handler);
+  lua_insert(L, hpos);
+
+  int ret = lua_pcall(L, narg, nret, hpos);  
+  if (ret != 0) {
+    const char *err = lua_tostring(L, -1);
+    nerror(err);
+    lua_pop(L, 1);
+  }
+  lua_remove(L, hpos);
   return ret;
 }
 
@@ -21,8 +47,16 @@ int neko_launch(const char *fname) {
   nlog("Launching: %s", fname);
   lua_State *L = luaL_newstate();
   luaL_openlibs(L);
-  luaL_loadfile(L, fname);
+  
+  int ret = luaL_loadfile(L, fname);
+  if (ret != 0) {
+    const char *err = lua_tostring(L, -1);
+    nerror(err);
+    lua_pop(L, 1);
+  }
+
   gfx_init(L);
+  nusagi_init(L);
   
   nlog("Initializing Lua state");
   lua_run(L, 0, 0);
@@ -34,9 +68,9 @@ int neko_launch(const char *fname) {
     nlog("Found _init function, running it");
     lua_run(L, 0, 0);
   } else {
-    lua_pop(L, 1);
     nlog("_init function not found");
   }
+  lua_pop(L, 1);
 
   nlog("Searching for _update function");
   bool _updatee = false;
