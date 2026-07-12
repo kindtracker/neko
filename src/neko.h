@@ -22,15 +22,17 @@ void nwarning(const char *format, ...);
 void nerror(const char *format, ...);
 void nfatal(const char *format, ...);
 
+int ginit();
+int ginit_platform();
 void ginit_window(const char *title);
 void gclose_window();
 void gset_fps(int fps);
 float gdelta_time();
 double gelapsed();
 bool gshould_stop();
-int ginit();
 void gbegin();
 void gend();
+Vector2 gmeasure_text(const char *text, int fs);
 void gclear(int r, int g, int b);
 void gtext(const char *text, int x, int y, int fs, int ro, int r, int g, int b, int a);
 void grect(int x, int y, int w, int h, int thick, int r, int g, int b, int a);

@@ -98,9 +98,17 @@ int neko_launch(const char *fname) {
   ginit_window("Neko");
   gset_fps(24);
 
+  bool first = true;
+
   while (!gshould_stop()) {
     gbegin();
-    // nusagi_update(L);
+
+    if (first) {
+      ginit();
+      first = false;
+    }
+    
+    nusagi_update(L);
     if (_updatee) {
       lua_getglobal(L, "_update");
       lua_run(L, 0, 0);
@@ -150,6 +158,7 @@ void usage(int ret) {
 }
 
 int main(int argc, char **argv) {
+  ginit_platform();
   nlog("Neko %s", RELEASE_STRING);
 
   char *fname = "main.lua";
@@ -176,7 +185,6 @@ int main(int argc, char **argv) {
   }
   running_fname = fname;
 
-  ginit();
   neko_launch(fname);
   return 0;
 }

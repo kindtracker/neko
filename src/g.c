@@ -26,11 +26,15 @@ bool gshould_stop() {
   return WindowShouldClose();
 }
 
+Vector2 gmeasure_text(const char *text, int fs) {
+  return MeasureTextEx(font, text, 1000000.0f, 6);
+}
+
 void gtext(const char *text, int x, int y, int fs, int ro, int r, int g, int b, int a) {
   Color c = {r, g, b, a};
   Vector2 origin = (Vector2){0, 0};
   if (ro != 0.0f) {
-    Vector2 textsz = MeasureTextEx(font, text, fs * 10, 6);
+    Vector2 textsz = gmeasure_text(text, fs);
     origin = (Vector2){textsz.x / 2.0f, textsz.y / 2.0f};
   }
   DrawTextPro(font, text, (Vector2){x, y}, origin, ro, fs * 10, 6, c);
@@ -92,14 +96,45 @@ void gend() {
   EndDrawing();
 }
 
+Font load_font_from_file(const char *filepath, int fontSize) {
+  // Read file into memory
+  FILE *file = fopen(filepath, "rb");
+  if (!file) {
+    nerror("Can't open font file: %s", filepath);
+    return GetFontDefault();
+  }
+  
+  // Get file size
+  fseek(file, 0, SEEK_END);
+  long filesize = ftell(file);
+  fseek(file, 0, SEEK_SET);
+  
+  // Read into buffer
+  unsigned char *buffer = malloc(filesize);
+  fread(buffer, 1, filesize, file);
+  fclose(file);
+  
+  // Load from memory
+  Font font = LoadFontFromMemory(".ttf", buffer, (int)filesize, fontSize, NULL, 0);
+  
+  free(buffer);
+  
+  return font;
+}
+
+int ginit_platform() {
+  SetTraceLogLevel(LOG_NONE);
+  return 0;
+}
+
 int ginit() {
   SetTraceLogLevel(LOG_NONE);
 
   const char *expanded = expand_path("~/.neko/assets/monogram-extended.ttf");
   nlog("Loading: font: %s", expanded);
   font = LoadFont(expanded);
-  
-  if (font.glyphCount == 0) {
+
+  if (font.texture.id == 0) {
     nerror("Couldn't load font: %s", expanded);
     nwarning("Loading default font: raylib font");
     font = GetFontDefault();
@@ -108,16 +143,44 @@ int ginit() {
 }
 
 const key_mapping_t key_table[] = {
-    {"KEY_ZERO", KEY_ZERO},
-    {"KEY_ONE", KEY_ONE},
-    {"KEY_TWO", KEY_TWO},
-    {"KEY_THREE", KEY_THREE},
-    {"KEY_FOUR", KEY_FOUR},
-    {"KEY_FIVE", KEY_FIVE},
-    {"KEY_SIX", KEY_SIX},
-    {"KEY_SEVEN", KEY_SEVEN},
-    {"KEY_EIGHT", KEY_EIGHT},
-    {"KEY_NINE", KEY_NINE},
+    {"KEY_0", KEY_ZERO},
+    {"KEY_1", KEY_ONE},
+    {"KEY_2", KEY_TWO},
+    {"KEY_3", KEY_THREE},
+    {"KEY_4", KEY_FOUR},
+    {"KEY_5", KEY_FIVE},
+    {"KEY_6", KEY_SIX},
+    {"KEY_7", KEY_SEVEN},
+    {"KEY_8", KEY_EIGHT},
+    {"KEY_9", KEY_NINE},
+
+    {"KEY_A", KEY_A},
+    {"KEY_B", KEY_B},
+    {"KEY_C", KEY_C},
+    {"KEY_D", KEY_D},
+    {"KEY_E", KEY_E},
+    {"KEY_F", KEY_F},
+    {"KEY_G", KEY_G},
+    {"KEY_H", KEY_H},
+    {"KEY_I", KEY_I},
+    {"KEY_J", KEY_J},
+    {"KEY_K", KEY_K},
+    {"KEY_L", KEY_L},
+    {"KEY_M", KEY_M},
+    {"KEY_N", KEY_N},
+    {"KEY_O", KEY_O},
+    {"KEY_P", KEY_P},
+    {"KEY_Q", KEY_Q},
+    {"KEY_R", KEY_R},
+    {"KEY_S", KEY_S},
+    {"KEY_T", KEY_T},
+    {"KEY_U", KEY_U},
+    {"KEY_V", KEY_V},
+    {"KEY_W", KEY_W},
+    {"KEY_X", KEY_X},
+    {"KEY_Y", KEY_Y},
+    {"KEY_Z", KEY_Z},
+    
     {"KEY_F1", KEY_F1},
     {"KEY_F2", KEY_F2},
     {"KEY_F3", KEY_F3},
@@ -130,16 +193,24 @@ const key_mapping_t key_table[] = {
     {"KEY_F10", KEY_F10},
     {"KEY_F11", KEY_F11},
     {"KEY_F12", KEY_F12},
+    
     {"KEY_SPACE", KEY_SPACE},
     {"KEY_ENTER", KEY_ENTER},
     {"KEY_ESCAPE", KEY_ESCAPE},
     {"KEY_TAB", KEY_TAB},
     {"KEY_BACKSPACE", KEY_BACKSPACE},
     {"KEY_DELETE", KEY_DELETE},
+
     {"KEY_LEFT", KEY_LEFT},
     {"KEY_RIGHT", KEY_RIGHT},
     {"KEY_UP", KEY_UP},
     {"KEY_DOWN", KEY_DOWN},
+    
+    {"KEY_LEFT", KEY_A},
+    {"KEY_RIGHT", KEY_D},
+    {"KEY_UP", KEY_W},
+    {"KEY_DOWN", KEY_S},
+    
     {"KEY_LSHIFT", KEY_LEFT_SHIFT},
     {"KEY_RSHIFT", KEY_RIGHT_SHIFT},
     {"KEY_LCTRL", KEY_LEFT_CONTROL},

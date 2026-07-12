@@ -14,6 +14,15 @@ static int neko_launch(lua_State *L) {
   return 0;
 }
 
+int neko_measure_text(lua_State *L) {
+  const char *text = luaL_checkstring(L, 1);
+  float fs = luaL_optnumber(L, 2, 1.0f);
+  Vector2 size = gmeasure_text(text, fs);
+  lua_pushnumber(L, size.x);
+  lua_pushnumber(L, size.y);
+  return 2;
+}
+
 int neko_update(lua_State *L) {
   lua_pushnumber(L, gelapsed());
   lua_setfield(L, -2, "elapsed");
@@ -51,6 +60,8 @@ int neko_init(lua_State *L) {
   lua_pushboolean(L, !is_dev);
   lua_setfield(L, -2, "IS_RELEASE");
 
+  lua_pushcfunction(L, neko_measure_text);
+  lua_setfield(L, -2, "measure_text");
   lua_pushcfunction(L, neko_launch);
   lua_setfield(L, -2, "launch");
   lua_pushcfunction(L, neko_quit);

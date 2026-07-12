@@ -35,6 +35,13 @@ int input_init(lua_State *L) {
   lua_pushcfunction(L, input_released);
   lua_setfield(L, -2, "released");
 
+  lua_pushcfunction(L, input_pressed);
+  lua_setfield(L, -2, "key_pressed");
+  lua_pushcfunction(L, input_held);
+  lua_setfield(L, -2, "key_held");
+  lua_pushcfunction(L, input_released);
+  lua_setfield(L, -2, "key_released");
+
   lua_setglobal(L, "input");
   return 0;
 }
