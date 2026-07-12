@@ -40,6 +40,9 @@ int gfx_init(lua_State *L);
 int usagi_init(lua_State *L);
 
 extern Font font;
+extern bool is_dev;
+extern char *luas;
+extern char *running_fname;
 
 static char* expand_path(const char *path) {
   if (path[0] != '~') return (char*)path;

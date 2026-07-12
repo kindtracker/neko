@@ -1,7 +1,12 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "neko.h"
+
+bool is_dev = false;
+char *running_fname;
+char *luas;
 
 int lua_run(lua_State *L, int narg, int nret) {
   int ret = lua_pcall(L, narg, nret, 0);
@@ -57,6 +62,7 @@ int neko_launch(const char *fname) {
 
   ginit_window("Neko");
   gset_fps(24);
+
   while (!gshould_stop()) {
     gbegin();
     if (_updatee) {
@@ -67,24 +73,71 @@ int neko_launch(const char *fname) {
       lua_getglobal(L, "_draw");
       lua_run(L, 0, 0);
     }
+    if (luas) {
+      char lfname[256];
+      uint8_t status;
+      if (sscanf(luas, "launch %255s", lfname) == 1) {
+        gclose_window();
+        neko_launch(lfname);
+        ginit_window("Neko");
+        gset_fps(24);
+      } else if (sscanf(luas, "exit %d", &status) == 1) {
+        gend();
+        lua_close(L);
+        gclose_window();
+        return status;
+      }
+
+      luas = NULL;
+    }
+    running_fname = NULL;
     gend();
   }
+
   lua_close(L);
   gclose_window();
   return 0;
+}
+
+void usage(int ret) {
+  printf("Usage: neko [COMMAND]\n");
+  printf("\n");
+  printf("Commands:\n");
+  printf("  run            Run a game (default: main.lua)\n");
+  printf("  dev            Run a game with developer mode (default: main.lua)\n");
+  printf("\n");
+  printf("Options:\n");
+  printf("  -h, --help     Print help\n");
+  printf("  -v, --version  Print version\n");
+  exit(ret);
 }
 
 int main(int argc, char **argv) {
   nlog("Neko %s", RELEASE_STRING);
 
   char *fname = "main.lua";
-  for (int i = 1; i < argc; i++) {
-    const char *arg = argv[i];
-    const char *dot = strrchr(arg, '.');
-    if (dot && !strcmp(dot, ".lua")) {
-      fname = (char *)arg;   
+  if (argc == 3) {
+    if (strcmp(argv[1], "run") == 0) {
+      fname = argv[2];
+    } else if (strcmp(argv[1], "dev") == 0) {
+      fname = argv[2];
+      is_dev = true;
     }
+  } else if (argc == 2) {
+    if (strcmp(argv[1], "run") == 0) {
+      fname = "main.lua";
+    } else if (strcmp(argv[1], "dev") == 0) {
+      fname = "main.lua";
+      is_dev = true;
+    } else if (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0) {
+      usage(0);
+    } else if (strcmp(argv[1], "-v") == 0 || strcmp(argv[1], "--version") == 0) {
+      return 0;
+    }
+  } else {
+    usage(0);
   }
+  running_fname = fname;
 
   ginit();
   neko_launch(fname);
