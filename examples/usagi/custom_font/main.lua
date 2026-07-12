@@ -1,0 +1,43 @@
+-- Custom font demo. Drops `font.png` (baked from Silver.ttf via
+-- `usagi font bake`) next to main.lua; the engine loads it
+-- automatically and uses it for gfx.text / gfx.text_ex. The pause
+-- menu, FPS overlay, and error text keep the bundled monogram so
+-- engine UI doesn't depend on the user font.
+--
+-- Silver is a 5x9-ish pixel font with broad European + partial CJK
+-- coverage, by Poppy Works, licensed CC-BY-4.0:
+-- https://poppyworks.itch.io/silver
+--
+-- To bake a font:
+--   usagi font bake Silver.ttf 18
+--
+-- The `usagi export` bundler skips .ttf files, so shipping the source TTF here
+-- doesn't bloat exported games.
+
+function _config()
+  return { name = "Custom Font (Silver)", game_height = 256 }
+end
+
+function _draw(_dt)
+  gfx.clear(gfx.COLOR_DARK_BLUE)
+
+  gfx.text("Custom Font Demo", 4, 4, gfx.COLOR_YELLOW)
+  gfx.text("Silver by Poppy Works (CC-BY-4.0)", 4, 26, gfx.COLOR_LIGHT_GRAY)
+
+  -- Multi-script lines.
+  gfx.text("Hello, world!", 4, 56, gfx.COLOR_WHITE)
+  gfx.text("Здравствуй, мир!", 4, 78, gfx.COLOR_WHITE)
+  gfx.text("Καλημέρα κόσμε", 4, 100, gfx.COLOR_WHITE)
+  gfx.text("こんにちは、世界！", 4, 122, gfx.COLOR_WHITE)
+  gfx.text("안녕하세요, 세계!", 4, 144, gfx.COLOR_WHITE)
+
+  -- Symbol blocks added in the box-drawing bake update. Silver covers
+  -- single-line box drawing, arrows, geometric shapes, card suits, and
+  -- math operators (it lacks the double-line box pieces like ╔═╗).
+  gfx.text("┌──┬──┐ ├──┼──┤ └──┴──┘", 4, 174, gfx.COLOR_GREEN)
+  gfx.text("← ↑ → ↓  ● ○ ■ □ ▲ ▶ ▼ ◀ ◆ ★", 4, 196, gfx.COLOR_ORANGE)
+  gfx.text("♥ ♦ ♣ ♠  × ÷ ≤ ≥ ≠ ± √ ∞", 4, 218, gfx.COLOR_PINK)
+
+  -- Footer hint (rendered in Silver too, since gfx.text uses the user font).
+  gfx.text("press esc to pause", 4, 240, gfx.COLOR_DARK_GRAY)
+end

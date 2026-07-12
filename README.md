@@ -1,4 +1,4 @@
-# Neko - an advanced version of [Usagi](https://codeberg.org/brettchalupa/usagi)
+# Neko - an advanced version of [Usagi](https://usagiengine.com/)
 
 Neko is a small, cross-platform game framework for creating pixel art games. 
 It provides a Lua API built on raylib.
@@ -95,6 +95,42 @@ gfx.COLOR_BROWN, gfx.COLOR_DARK_GRAY, gfx.COLOR_LIGHT_GRAY, gfx.COLOR_WHITE
 gfx.COLOR_RED,   gfx.COLOR_ORANGE,    gfx.COLOR_YELLOW,     gfx.COLOR_GREEN
 gfx.COLOR_BLUE,  gfx.COLOR_INDIGO,    gfx.COLOR_PINK,       gfx.COLOR_PEACH
 
+-- Input
+
+input.pressed(action)
+input.held(action)
+input.released(action)
+input.mapping_for(action)
+input.last_source()
+
+input.LEFT, input.RIGHT, input.UP, input.DOWN
+input.BTN1, input.BTN2, input.BTN3
+input.SOURCE_KEYBOARD, input.SOURCE_GAMEPAD
+
+input.mouse()
+input.mouse_over()
+input.mouse_held(button)
+input.mouse_pressed(button)
+input.mouse_released(button)
+input.mouse_scroll()
+input.set_mouse_visible(visible)
+input.mouse_visible()
+
+input.MOUSE_LEFT, input.MOUSE_RIGHT, input.MOUSE_MIDDLE
+
+input.key_held(key)
+input.key_pressed(key)
+input.key_released(key)
+
+input.KEY_A   .. input.KEY_Z
+input.KEY_0   .. input.KEY_9
+input.KEY_F1  .. input.KEY_F12
+input.KEY_SPACE, KEY_ENTER, KEY_ESCAPE, KEY_TAB, KEY_BACKSPACE, KEY_DELETE
+input.KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN
+input.KEY_LSHIFT, KEY_RSHIFT, KEY_LCTRL, KEY_RCTRL, KEY_LALT, KEY_RALT
+input.KEY_BACKTICK, KEY_MINUS, KEY_EQUAL
+input.KEY_LBRACKET, KEY_RBRACKET, KEY_BACKSLASH
+input.KEY_SEMICOLON, KEY_APOSTROPHE, KEY_COMMA, KEY_PERIOD, KEY_SLASH
 ```
 
 ### `gfx`
@@ -119,6 +155,8 @@ Neko is written in C.
 - **Raylib** - Neko uses [Raylib](https://raylib.com) to make graphics, inputs, audio, etc
 
 - **Lua** - [Lua](https://lua.org/) is the scripting language for Neko
+
+- **Usagi** - Neko uses [Usagi](https://usagiengine.com/)'s examples to test APIs
 
 - **monogram-extended** the bundled font (`assets/monogram-extended.ttf`)
 

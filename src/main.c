@@ -8,8 +8,8 @@ bool is_dev = false;
 char *running_fname;
 char *luas;
 
-/*int lua_run(lua_State *L, int narg, int nret) {
-  int ret = lua_pcall(L, narg, nret, 0);  // Just use 0, no handler
+int lua_run(lua_State *L, int narg, int nret) {
+  int ret = lua_pcall(L, narg, nret, 0);
   
   if (ret != 0) {
     const char *err = lua_tostring(L, -1);
@@ -18,9 +18,9 @@ char *luas;
   }
   
   return ret;
-}*/
+}
 
-static int traceback_handler(lua_State *L) {
+/*static int traceback_handler(lua_State *L) {
   lua_getglobal(L, "debug");
   lua_getfield(L, -1, "traceback");
   lua_pushvalue(L, 1);
@@ -41,7 +41,7 @@ int lua_run(lua_State *L, int narg, int nret) {
   }
   lua_remove(L, hpos);
   return ret;
-}
+}*/
 
 int neko_launch(const char *fname) {
   nlog("Launching: %s", fname);
@@ -57,6 +57,7 @@ int neko_launch(const char *fname) {
 
   gfx_init(L);
   nusagi_init(L);
+  input_init(L);
   
   nlog("Initializing Lua state");
   lua_run(L, 0, 0);
@@ -99,7 +100,7 @@ int neko_launch(const char *fname) {
 
   while (!gshould_stop()) {
     gbegin();
-    nusagi_update(L);
+    // nusagi_update(L);
     if (_updatee) {
       lua_getglobal(L, "_update");
       lua_run(L, 0, 0);
