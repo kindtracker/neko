@@ -1,4 +1,5 @@
 #pragma once
+#include <stdlib.h>
 #include "lua.h"
 #include "lauxlib.h"
 #include "lualib.h"
@@ -36,3 +37,14 @@ int gfx_init(lua_State *L);
 int usagi_init(lua_State *L);
 
 extern Font font;
+
+static char* expand_path(const char *path) {
+  if (path[0] != '~') return (char*)path;
+  
+  const char *home = getenv("HOME");
+  if (!home) return (char*)path;
+  
+  static char expanded[256];
+  snprintf(expanded, sizeof(expanded), "%s%s", home, path + 1);
+  return expanded;
+}

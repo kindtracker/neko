@@ -94,10 +94,15 @@ void gend() {
 
 int ginit() {
   SetTraceLogLevel(LOG_NONE);
-  nlog("Loading: font assets/monogram-extended.ttf");
-  font = LoadFont("assets/monogram-extended.ttf");
+
+  const char *expanded = expand_path("~/.neko/assets/monogram-extended.ttf");
+  nlog("Loading: font: %s", expanded);
+  font = LoadFont(expanded);
+  
   if (font.glyphCount == 0) {
-    nfatal("Couldn't load default font: assets/monogram-extended.ttf");
+    nerror("Couldn't load font: %s", expanded);
+    nwarning("Loading default font: raylib font");
+    font = GetFontDefault();
   }
   return 0;
 }

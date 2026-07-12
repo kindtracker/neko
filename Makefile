@@ -12,9 +12,9 @@ COBJ = $(patsubst %.c,$(BUILD)/%.o,$(CSRC))
 
 PREFIX ?= $(HOME)/.neko
 INSTALL_BIN = $(PREFIX)/bin
-INSTALL_DATA = $(PREFIX)/assets
+INSTALL_DATA = $(PREFIX)/
 
-all: compile
+all: compile install
 
 clean:
 	mkdir -p $(BUILD)
@@ -22,9 +22,6 @@ clean:
 
 compile: $(OUT)
 	cp -R $(ASSETS) $(BUILD)/.
-
-run:
-	./$(OUT) examples/pal.lua
 
 install: $(OUT)
 	mkdir -p $(INSTALL_BIN) $(INSTALL_DATA)

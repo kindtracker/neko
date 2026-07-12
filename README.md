@@ -15,7 +15,7 @@ Linux, macOS:
 cd /tmp/ 
 git clone https://github.com/kindtracker/neko.git 
 cd neko
-make && make install
+make
 ```
 
 ## Getting started
@@ -96,6 +96,15 @@ gfx.COLOR_BLUE,  gfx.COLOR_INDIGO,    gfx.COLOR_PINK,       gfx.COLOR_PEACH
 - `gfx.tri_ex` same as `gfx.tri` but with thickness
 - `gfx.pal` - set a custom color in the palette (below -1 is not allowed)
 - `gfx.get_pal` - returns color from the palette
+
+## Roadmap
+
+- [] Add input API.
+- [] Add image API.
+- [] Add effects API.
+- [] Add sfx API
+- [] You can use same API from Usagi and Neko at same time.
+- [] Write games once in Lua, run on desktop and 3DS without code changes.
 
 ## Credits
 Neko is written in C.
