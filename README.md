@@ -142,7 +142,7 @@ input.KEY_SEMICOLON, KEY_APOSTROPHE, KEY_COMMA, KEY_PERIOD, KEY_SLASH
 
 ## Roadmap
 
-- [ ] Add input API.
+- [ ] Add input API. Work In Progress
 - [ ] Add image API.
 - [ ] Add effects API.
 - [ ] Add sfx API
