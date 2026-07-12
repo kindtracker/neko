@@ -3,6 +3,8 @@
 Neko is a small, cross-platform game framework for creating pixel art games. 
 It provides a Lua API built on raylib.
 
+(Usagi is NOT MINE)
+
 ## Features
 
 - **Drop-in replacement for Usagi with additional features** You can use same API from Usagi and Neko at same time
