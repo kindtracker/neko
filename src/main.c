@@ -65,6 +65,7 @@ int neko_launch(const char *fname) {
 
   while (!gshould_stop()) {
     gbegin();
+    nusagi_update(L);
     if (_updatee) {
       lua_getglobal(L, "_update");
       lua_run(L, 0, 0);
@@ -73,6 +74,7 @@ int neko_launch(const char *fname) {
       lua_getglobal(L, "_draw");
       lua_run(L, 0, 0);
     }
+
     if (luas) {
       char lfname[256];
       uint8_t status;

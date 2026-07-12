@@ -37,7 +37,8 @@ void gtri(int x1, int y1, int x2, int y2, int x3, int y3, int t, int r, int g, i
 void gtri_fill(int x1, int y1, int x2, int y2, int x3, int y3, int r, int g, int b, int a);
 
 int gfx_init(lua_State *L);
-int usagi_init(lua_State *L);
+int nusagi_init(lua_State *L);
+int nusagi_update(lua_State *L);
 
 extern Font font;
 extern bool is_dev;

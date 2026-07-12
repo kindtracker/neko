@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -O0 -Wall -Wextra -Isrc
+CFLAGS = -Wall -Wextra -Isrc
 LIBS = -lm -lraylib
 
 ASSETS = assets

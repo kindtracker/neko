@@ -54,6 +54,9 @@ neko.GAME_H -- default: 240
 neko.WINDOW_W -- default: 640
 neko.WINDOW_H -- default: 480
 neko.PLATFORM -- "linux"
+neko.IS_DEV
+neko.IS_RELEASE
+neko.elapsed
 neko.launch(filename?) -- if no filename, it will launch itself
 neko.quit(status?) -- default: 0
 

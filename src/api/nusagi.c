@@ -16,6 +16,21 @@ static int neko_launch(lua_State *L) {
   return 0;
 }
 
+int neko_update(lua_State *L) {
+  lua_pushnumber(L, gelapsed());
+  lua_setfield(L, -2, "elapsed");
+}
+
+int nusagi_update(lua_State *L) {
+  lua_getglobal(L, "neko");
+  neko_update(L);
+  lua_setglobal(L, "neko");
+  
+  lua_getglobal(L, "usagi");
+  neko_update(L);
+  lua_setglobal(L, "usagi");
+}
+
 int neko_init(lua_State *L) {
   lua_pushnumber(L, DEFAULT_WIDTH);
   lua_setfield(L, -2, "GAME_W");
@@ -30,6 +45,11 @@ int neko_init(lua_State *L) {
   lua_pushstring(L, "linux");
   lua_setfield(L, -2, "PLATFORM");
 
+  lua_pushboolean(L, is_dev);
+  lua_setfield(L, -2, "IS_DEV");
+  lua_pushboolean(L, !is_dev);
+  lua_setfield(L, -2, "IS_RELEASE");
+
   lua_pushcfunction(L, neko_launch);
   lua_setfield(L, -2, "launch");
   lua_pushcfunction(L, neko_quit);
@@ -37,7 +57,7 @@ int neko_init(lua_State *L) {
   return 0;
 }
 
-int usagi_init(lua_State *L) {
+int nusagi_init(lua_State *L) {
   nlog("Loading: nusagi API");
 
   lua_newtable(L);
