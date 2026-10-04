@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
 
-CFlags="-O3"
-LDFlags="-sWASM=2 -sASSERTIONS=1"
+CFlags="-O0"
+LDFlags="-sWASM=1 -sASSERTIONS=1 -sASYNCIFY=1 -sASYNCIFY_IMPORTS=NekoCallJavaScript"
 Jobs="$(nproc)"
 
 rm -rf build

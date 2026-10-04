@@ -123,6 +123,7 @@ end)
 
 Page.Document.MouseUp:Connect(function(Event)
 	Oneko.Dragging = false
+	Neko.Browser:Alert("test")
 end)
 
 function Idle(Oneko)

@@ -320,6 +320,16 @@ local Packages = {
 		Source = "nekolua/localstorage.lua",
 		Install = "/nekolib/localstorage.lua",
 	},
+
+	["nekolib/sessionstorage.lua"] = {
+		Source = "nekolua/sessionstorage.lua",
+		Install = "/nekolib/sessionstorage.lua",
+	},
+
+	["nekolib/http.lua"] = {
+		Source = "nekolua/http.lua",
+		Install = "/nekolib/http.lua",
+	},
 }
 
 local function Escape(String)

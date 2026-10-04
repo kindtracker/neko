@@ -7,7 +7,8 @@
 
 EM_JS(int, NekoCompileJavaScript, (char *String), {
   String = UTF8ToString(String);
-  const CompFunction = new Function("Arguments", String);
+  const AsyncFunction = Object.getPrototypeOf(async function(){}).constructor;
+  const CompFunction = new AsyncFunction("Arguments", String);
 
   if (!Module.NekoFunctions) {
     Module.NekoFunctions = new Map();
@@ -21,14 +22,24 @@ EM_JS(int, NekoCompileJavaScript, (char *String), {
 
 EM_JS(char *, NekoCallJavaScript, (int Id, char *ArgumentsJson), {
   const CompFunction = Module.NekoFunctions.get(Id);
-
   const Arguments = JSON.parse(UTF8ToString(ArgumentsJson));
-  const ReturnString = String(CompFunction(Arguments));
 
-  const Length = lengthBytesUTF8(ReturnString) + 1;
+  let Done = false;
+  let Result = "";
+
+  Promise.resolve(CompFunction(Arguments)).then(function(Value) {
+    Result = String(Value);
+    Done = true;
+  });
+
+  while (!Done) {
+    Asyncify.handleSleep(function(WakeUp) { setTimeout(WakeUp, 0); });
+  }
+
+  const Length = lengthBytesUTF8(Result) + 1;
   const Pointer = _malloc(Length);
 
-  stringToUTF8(ReturnString, Pointer, Length);
+  stringToUTF8(Result, Pointer, Length);
 
   return Pointer;
 });
@@ -39,6 +50,8 @@ EM_JS(void, NekoCallJavaScriptVoid, (int Id, char *ArgumentsJson), {
   const Arguments = JSON.parse(UTF8ToString(ArgumentsJson));
   CompFunction(Arguments);
 });
+
+EM_JS(void, NekoFree, (char *Pointer), { _free(Pointer); });
 
 void NekoAddJsonString(luaL_Buffer *Buffer, const char *Value) {
   luaL_addchar(Buffer, '"');
@@ -115,6 +128,7 @@ int NekoLoadStringCall(lua_State *Lua) {
   lua_pop(Lua, 1);
 
   lua_pushstring(Lua, ReturnString);
+  NekoFree(ReturnString);
   return 1;
 }
 

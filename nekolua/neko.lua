@@ -13,7 +13,9 @@ PluginService:LoadLuaPlugin("CoreNekoHtmlElement", Base .. "/htmlelem.lua")
 PluginService:LoadLuaPlugin("CoreNekoPage", Base .. "/page.lua")
 PluginService:LoadLuaPlugin("CoreNekoBrowser", Base .. "/browser.lua")
 PluginService:LoadLuaPlugin("CoreNekoLocalStorage", Base .. "/localstorage.lua")
+PluginService:LoadLuaPlugin("CoreNekoSessionStorage", Base .. "/sessionstorage.lua")
 PluginService:LoadLuaPlugin("CoreNekoTask", Base .. "/task.lua")
+PluginService:LoadLuaPlugin("CoreNekoHttp", Base .. "/http.lua")
 Neko.ProcessEvents = EventModule.ProcessEvents
 
 Neko:LoadStringVoid([=[
