@@ -442,7 +442,7 @@ Event.CurrentTime
 Event.Message
 Event.Filename
 Event.Lineno
-Event.Colno
+Event.ColumnNumber
 ```
 
 ## License

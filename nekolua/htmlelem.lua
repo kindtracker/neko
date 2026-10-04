@@ -79,7 +79,7 @@ local LuaToJavascriptStringTable = {
 	Width = "width",
 	Height = "height",
 
-	ColSpan = "colSpan",
+	ColumnSpan = "colSpan",
 	RowSpan = "rowSpan",
 
 	Headers = "headers",
@@ -115,7 +115,7 @@ local LuaToJavascriptNumberTable = {
 	Width = "width",
 	Height = "height",
 
-	ColSpan = "colSpan",
+	ColumnSpan = "colSpan",
 	RowSpan = "rowSpan",
 
 	Size = "size",
@@ -399,9 +399,118 @@ local LuaToJavascriptEventTable = {
 	Message = "message",
 	Filename = "filename",
 	Lineno = "lineno",
-	Colno = "colno",
+	ColumnNumber = "colno",
 
 	ClipboardData = "clipboardData",
+}
+
+local LuaToJavascriptAttributeTable = {
+	ClassName = "class",
+	HtmlFor = "for",
+	TabIndex = "tabindex",
+	ReadOnly = "readonly",
+	AutoFocus = "autofocus",
+	AutoComplete = "autocomplete",
+	AutoPlay = "autoplay",
+	CellPadding = "cellpadding",
+	CellSpacing = "cellspacing",
+	ColumnSpan = "colspan",
+	RowSpan = "rowspan",
+	MaxLength = "maxlength",
+	MinLength = "minlength",
+	FormAction = "formaction",
+	FormMethod = "formmethod",
+	FormTarget = "formtarget",
+	AcceptCharset = "accept-charset",
+	CharSet = "charset",
+	HttpEquivalent = "http-equiv",
+
+	AccessKey = "accesskey",
+	ContentEditable = "contenteditable",
+	Draggable = "draggable",
+	Hidden = "hidden",
+	Dir = "dir",
+	Language = "lang",
+	Role = "role",
+	Slot = "slot",
+	SpellCheck = "spellcheck",
+	Title = "title",
+
+	Id = "id",
+	Name = "name",
+	Value = "value",
+	Type = "type",
+	Placeholder = "placeholder",
+
+	Href = "href",
+	Src = "src",
+	Alt = "alt",
+
+	Width = "width",
+	Height = "height",
+
+	Min = "min",
+	Max = "max",
+	Step = "step",
+	Pattern = "pattern",
+
+	Checked = "checked",
+	Disabled = "disabled",
+	Multiple = "multiple",
+	Required = "required",
+	Selected = "selected",
+
+	Download = "download",
+	Target = "target",
+	Rel = "rel",
+
+	For = "for",
+
+	Poster = "poster",
+	Preload = "preload",
+	Controls = "controls",
+	Loop = "loop",
+	Muted = "muted",
+
+	Autofocus = "autofocus",
+	Autocomplete = "autocomplete",
+
+	Accept = "accept",
+	Capture = "capture",
+
+	Rows = "rows",
+	Columns = "cols",
+	Wrap = "wrap",
+
+	Open = "open",
+	Reversed = "reversed",
+	Start = "start",
+
+	Datetime = "datetime",
+	Cite = "cite",
+
+	Media = "media",
+	Kind = "kind",
+	SourceLang = "srclang",
+
+	Poster = "poster",
+	CrossOrigin = "crossorigin",
+
+	Async = "async",
+	Defer = "defer",
+	NoModule = "nomodule",
+
+	UseMap = "usemap",
+	IsMap = "ismap",
+
+	FrameBorder = "frameborder",
+	Allow = "allow",
+	AllowFullScreen = "allowfullscreen",
+
+	ReferrerPolicy = "referrerpolicy",
+	Sandbox = "sandbox",
+
+	Translate = "translate",
 }
 
 local CompiledGetStringOrNumberOrBooleanProperty = Neko:LoadString(GetElementJavascriptFunction .. [=[
@@ -432,6 +541,12 @@ local CompiledSetNumberOrBooleanProperty = Neko:LoadStringVoid(GetElementJavascr
 	Element[Arguments[1]] = Arguments[2]
 ]=])
 
+local CompiledSetAttribute = Neko:LoadStringVoid(GetElementJavascriptFunction .. [=[
+	const Element = GetElement(Arguments[0])
+
+  Element.setAttribute(Arguments[1], Arguments[2])
+]=])
+
 local CompiledCreateElement = Neko:LoadStringVoid([=[
 	Module.NekoElements.set(
 		Arguments[0],
@@ -459,7 +574,7 @@ local CompiledRemoveChild = Neko:LoadStringVoid(GetElementJavascriptFunction .. 
 
 local CompiledCloneElement = Neko:LoadStringVoid(GetElementJavascriptFunction .. [=[
   const Element = GetElement(Arguments[0])
-  
+
   Module.NekoElements.set(Arguments[1], Element.cloneNode(true))
 ]=])
 
@@ -519,6 +634,12 @@ function Module.new()
 				Clone.TagName = Instance.TagName
 				CompiledCloneElement(Instance.UniqueId, Clone.UniqueId)
 				return Clone
+			end
+
+			local InstanceSetAttribute = Instance.SetAttribute
+			Instance.SetAttribute = function(Instance, Key, Value)
+				InstanceSetAttribute(Instance, Key, Value)
+				CompiledSetAttribute(Instance.UniqueId, LuaToJavascriptAttributeTable[Key], Value)
 			end
 		elseif Key == "Parent" then
 			if NewValue == nil then

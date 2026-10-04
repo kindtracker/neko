@@ -46,6 +46,10 @@ local CompiledGetCookies = Neko:LoadString([=[
   return window.cookie
 ]=])
 
+local CompiledPrompt = Neko:LoadStringVoid([=[
+  window.prompt(Arguments[0], Arguments[1])
+]=])
+
 function Browser:Alert(Message)
 	CompiledRunWindowFunctionVoid("alert", tostring(Message))
 end
@@ -55,8 +59,8 @@ function Browser:Confirm(Message)
 	return JSONService:Decode(Result)
 end
 
-function Browser:Prompt(Message)
-	local Result = CompiledRunWindowFunction("prompt", tostring(Message))
+function Browser:Prompt(Message, Default)
+	local Result = CompiledPrompt(tostring(Message), tostring(Default))
 	return JSONService:Decode(Result)
 end
 
